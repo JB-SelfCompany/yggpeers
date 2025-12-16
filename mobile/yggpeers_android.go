@@ -30,21 +30,22 @@ type Manager struct {
 	m           *yggpeers.Manager
 	logCallback LogCallback
 
-	// Batching configuration (can be customized)
+	// Batching configuration (can be customized via SetBatchingParams)
+	// Defaults are imported from yggpeers package constants
 	batchSize    int
 	concurrency  int
 	batchPauseMs int
 }
 
 // NewManager creates a manager with default settings
-// Default batching: 10 peers per batch, 10 concurrent, 100ms pause
+// Default batching: 20 peers per batch, 20 concurrent, 200ms pause
 // Optimal for most home/mobile connections (10-100 Mbps)
 func NewManager() *Manager {
 	return &Manager{
 		m:            yggpeers.NewManager(),
-		batchSize:    20,
-		concurrency:  20,
-		batchPauseMs: 100,
+		batchSize:    yggpeers.DefaultBatchSize,
+		concurrency:  yggpeers.DefaultConcurrency,
+		batchPauseMs: yggpeers.DefaultBatchPauseMs,
 	}
 }
 
@@ -54,9 +55,9 @@ func NewManagerWithTTL(ttlMinutes int) *Manager {
 		m: yggpeers.NewManager(
 			yggpeers.WithCacheTTL(time.Duration(ttlMinutes) * time.Minute),
 		),
-		batchSize:    20,
-		concurrency:  20,
-		batchPauseMs: 100,
+		batchSize:    yggpeers.DefaultBatchSize,
+		concurrency:  yggpeers.DefaultConcurrency,
+		batchPauseMs: yggpeers.DefaultBatchPauseMs,
 	}
 }
 

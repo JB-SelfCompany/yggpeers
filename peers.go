@@ -8,6 +8,14 @@ import (
 	"time"
 )
 
+// Default batching parameters for peer discovery
+// Optimal for most mobile/home connections (10-100 Mbps)
+const (
+	DefaultBatchSize     = 20  // Peers per batch
+	DefaultConcurrency   = 20  // Concurrent checks
+	DefaultBatchPauseMs  = 200 // Pause between batches (ms)
+)
+
 // Manager manages the list of peers and cache
 type Manager struct {
 	primaryURL   string
