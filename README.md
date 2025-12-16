@@ -14,6 +14,8 @@ Go library for discovering and checking Yggdrasil Network public peers with mobi
 
 ## Installation
 
+**Requirements:** Go 1.25.5 or later
+
 ```bash
 go get github.com/jbselfcompany/yggpeers
 ```
@@ -117,10 +119,18 @@ mgr.ClearCache()
 
 ### Android (Kotlin)
 
+First, add the AAR to your Android project (place `yggpeers.aar` in `app/libs/` and add to `build.gradle`):
+```gradle
+dependencies {
+    implementation files('libs/yggpeers.aar')
+}
+```
+
+Then use in your code:
 ```kotlin
 import yggpeers.Mobile
 
-val manager = Mobile.NewManager()
+val manager = Mobile.newManager()
 
 // Set log callback
 manager.setLogCallback(object : Mobile.LogCallback {
@@ -147,12 +157,24 @@ manager.checkPeersAsync(peersJSON, object : Mobile.CheckCallback {
 
 ### Building AAR
 
+**Windows:**
 ```bash
 cd mobile
 build-android.bat
 ```
 
-Output: `yggpeers.aar` and `yggpeers-sources.jar`
+**Unix/Linux/macOS:**
+```bash
+cd mobile
+gomobile bind -target=android -androidapi 23 -ldflags="-checklinkname=0" -o yggpeers.aar github.com/jbselfcompany/yggpeers/mobile
+```
+
+**Output:** `yggpeers.aar` and `yggpeers-sources.jar`
+
+**Prerequisites:**
+- Android SDK installed and `ANDROID_HOME` environment variable set
+- gomobile installed: `go install golang.org/x/mobile/cmd/gomobile@latest`
+- gomobile initialized: `gomobile init`
 
 ## API Reference
 
@@ -190,11 +212,16 @@ type Peer struct {
     Key        string
     ResponseMS int
     LastSeen   int64
+    Updated    int64
+    Imported   int64
+    ProtoMinor int
+    Priority   *int
 
     // Check results
     Available  bool
     RTT        time.Duration
     CheckedAt  time.Time
+    CheckError error
 }
 
 type FilterOptions struct {
@@ -210,8 +237,8 @@ type FilterOptions struct {
 ## Examples
 
 See [examples/](examples/) directory:
-- [basic.go](examples/basic.go) - Basic usage
-- [filter.go](examples/filter.go) - Filtering and sorting
+- [basic/main.go](examples/basic/main.go) - Basic usage
+- [filter/main.go](examples/filter/main.go) - Filtering and sorting
 - [mobile.md](examples/mobile.md) - Mobile examples (Android/iOS)
 
 ## Data Sources
@@ -232,4 +259,4 @@ Contributions are welcome! Please open an issue or pull request.
 - [yggdrasil-go](https://github.com/yggdrasil-network/yggdrasil-go) - Yggdrasil Network core
 - [yggquic](https://github.com/Revertron/yggquic) - QUIC transport for Yggdrasil
 - [yggmail](https://github.com/JB-SelfCompany/yggmail) - Mail over Yggdrasil
-- [tyr](https://github.com/JB-SelfCompany/Tyr) - True P2P Email on top of Yggdrasil Network for android 
+- [Tyr](https://github.com/JB-SelfCompany/Tyr) - True P2P Email on top of Yggdrasil Network for Android

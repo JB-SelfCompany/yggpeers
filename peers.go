@@ -99,8 +99,13 @@ func (m *Manager) GetAvailablePeers(ctx context.Context, filter *FilterOptions) 
 		return nil, err
 	}
 
-	// Pre-filter (protocol, region, onlyUp)
-	filtered := m.FilterPeers(peers, filter, SortByRTT)
+	// Pre-filter (protocol, region only - NOT onlyUp, onlyAvailable)
+	preFilter := &FilterOptions{}
+	if filter != nil {
+		preFilter.Protocols = filter.Protocols
+		preFilter.Regions = filter.Regions
+	}
+	filtered := m.FilterPeers(peers, preFilter, SortByRTT)
 
 	// Check availability
 	err = m.CheckPeers(ctx, filtered, 20) // 20 concurrent checks
@@ -108,7 +113,7 @@ func (m *Manager) GetAvailablePeers(ctx context.Context, filter *FilterOptions) 
 		return nil, fmt.Errorf("failed to check peers: %w", err)
 	}
 
-	// Post-filter (onlyAvailable, RTT range)
+	// Post-filter (onlyAvailable, onlyUp, RTT range)
 	result := make([]*Peer, 0)
 	for _, peer := range filtered {
 		if matchesFilter(peer, filter) {
