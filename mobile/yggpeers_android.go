@@ -42,8 +42,8 @@ type Manager struct {
 func NewManager() *Manager {
 	return &Manager{
 		m:            yggpeers.NewManager(),
-		batchSize:    10,
-		concurrency:  10,
+		batchSize:    20,
+		concurrency:  20,
 		batchPauseMs: 100,
 	}
 }
@@ -54,8 +54,8 @@ func NewManagerWithTTL(ttlMinutes int) *Manager {
 		m: yggpeers.NewManager(
 			yggpeers.WithCacheTTL(time.Duration(ttlMinutes) * time.Minute),
 		),
-		batchSize:    10,
-		concurrency:  10,
+		batchSize:    20,
+		concurrency:  20,
 		batchPauseMs: 100,
 	}
 }
