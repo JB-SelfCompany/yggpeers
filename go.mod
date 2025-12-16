@@ -1,4 +1,4 @@
-module github.com/jbselfcompany/yggpeers
+module github.com/JB-SelfCompany/yggpeers
 
 go 1.25.5
 
