@@ -37,14 +37,14 @@ type Manager struct {
 }
 
 // NewManager creates a manager with default settings
-// Default batching: 50 peers per batch, 25 concurrent, 150ms pause
+// Default batching: 10 peers per batch, 10 concurrent, 100ms pause
 // Optimal for most home/mobile connections (10-100 Mbps)
 func NewManager() *Manager {
 	return &Manager{
 		m:            yggpeers.NewManager(),
-		batchSize:    50,
-		concurrency:  25,
-		batchPauseMs: 150,
+		batchSize:    10,
+		concurrency:  10,
+		batchPauseMs: 100,
 	}
 }
 
@@ -54,26 +54,13 @@ func NewManagerWithTTL(ttlMinutes int) *Manager {
 		m: yggpeers.NewManager(
 			yggpeers.WithCacheTTL(time.Duration(ttlMinutes) * time.Minute),
 		),
-		batchSize:    50,
-		concurrency:  25,
-		batchPauseMs: 150,
+		batchSize:    10,
+		concurrency:  10,
+		batchPauseMs: 100,
 	}
 }
 
 // SetBatchingParams configures batching for peer checks
-// Use this to optimize for your connection type:
-//
-// Slow connection (< 10 Mbps):
-//   SetBatchingParams(30, 15, 200)
-//
-// Normal connection (10-100 Mbps):
-//   SetBatchingParams(50, 25, 150) - DEFAULT
-//
-// Fast connection (> 100 Mbps):
-//   SetBatchingParams(100, 40, 100)
-//
-// Server/Datacenter (1+ Gbps):
-//   SetBatchingParams(200, 100, 50)
 func (m *Manager) SetBatchingParams(batchSize, concurrency, pauseMs int) {
 	if batchSize > 0 {
 		m.batchSize = batchSize

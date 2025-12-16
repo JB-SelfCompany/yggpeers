@@ -8,11 +8,14 @@ import (
 type Protocol string
 
 const (
-	ProtocolTCP  Protocol = "tcp"
-	ProtocolTLS  Protocol = "tls"
-	ProtocolQUIC Protocol = "quic"
-	ProtocolWS   Protocol = "ws"
-	ProtocolWSS  Protocol = "wss"
+	ProtocolTCP      Protocol = "tcp"
+	ProtocolTLS      Protocol = "tls"
+	ProtocolQUIC     Protocol = "quic"
+	ProtocolWS       Protocol = "ws"
+	ProtocolWSS      Protocol = "wss"
+	ProtocolUNIX     Protocol = "unix"
+	ProtocolSOCKS    Protocol = "socks"
+	ProtocolSOCKSTLS Protocol = "sockstls"
 )
 
 // Peer represents information about a Yggdrasil peer from the public list

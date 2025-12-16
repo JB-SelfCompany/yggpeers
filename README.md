@@ -202,7 +202,7 @@ gomobile bind -target=android -androidapi 23 -ldflags="-checklinkname=0" -o yggp
 ```go
 type Peer struct {
     Address    string        // "tls://host:port"
-    Protocol   Protocol      // tcp, tls, quic, ws, wss
+    Protocol   Protocol      // tcp, tls, quic, ws, wss, unix, socks
     Host       string
     Port       string
     Region     string        // "germany"
